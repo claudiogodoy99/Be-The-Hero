@@ -6,13 +6,21 @@ module.exports = {
 
         const [count] = await connection('incidents').count();
 
-        response.header('X-Total-Count', count['count(*)']);  
+        response.header('X-Total-Count', count['count(*)']);
 
         return response.json(await connection('incidents')
             .join('ongs', 'ongs.id' , '=', 'incidents.ong_id')
             .limit(5)
-            .offset((page-1)*5))
-            .select(['incidents.*', 'ongs.nome','ongs.email','ongs.whatsapp','ongs.city','ongs.uf']);
+            .offset((page-1)*5)
+            .select([
+                'incidents.*',
+                'ongs.nome',
+                'ongs.email',
+                'ongs.whatsapp',
+                'ongs.city',
+                'ongs.uf'])
+            );
+           
     },
 
     async Delete(request, response) {
